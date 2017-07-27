@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-// TODO: aquí también vamos a necesitar `react-string-replace`
+import replace from 'react-string-replace'
 
-// TODO: añade aquí el componente @Mention (primero hay que crearlo :)
 import CommentForm from './CommentForm'
+import Mention from './Mention'
 
 class Comments extends Component {
   state = { showComments: true }
@@ -10,19 +10,33 @@ class Comments extends Component {
   toggleComments = () => this.setState(({ showComments }) =>
     ({ showComments: !showComments }))
 
-  renderComment = ({ from: { full_name: name }, text }, i) => (
-    <div className='comment' key={i}>
-      <p>
-        <strong>{name}</strong>
-        {/* TODO: reemplaza el texto de los comentarios
-          añadiendo las menciones a otros @usuarios */}
-        {text}
-        <button
-          onClick={() => this.props.removeComment(this.props.params.postId, i)}
-          className='remove-comment'>&times;</button>
-      </p>
-    </div>
-  )
+  renderComment = ({ from: { full_name: name }, text }, i) => {
+    let replacedText = null
+
+    //match @-mentions
+    replacedText = replace(text, /@(\w+)/g, (match, i) => (
+      <Mention key={match + i} text={match} />
+    ))
+
+    //match hashtags
+    replacedText = replace(replacedText, /#(\w+)/g, (match, i) => (
+      <Mention key={match + i} text={match} hashtag={true}/>
+    ))
+
+    return (
+      <div className='comment' key={i}>
+        <p>
+          <strong>
+            <a key={name} target='blank' href={`https://www.instagram.com/${name}`}>{name}</a>
+          </strong>
+          {replacedText}
+          <button
+            onClick={() => this.props.removeComment(this.props.params.postId, i)}
+            className='remove-comment'>&times;</button>
+        </p>
+      </div>
+    )
+  }
 
   render = () => (
     <div className='comments'>
