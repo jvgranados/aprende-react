@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import replace from 'react-string-replace'
 import CSSTransitionGroup from 'react-addons-css-transition-group'
 
-import Hashtag from './Hashtag'
+import Mention from './Mention'
 
 const Photo = ({ post, i, increment, decrement, comments }) => (
   <figure className='grid-figure'>
@@ -20,7 +20,7 @@ const Photo = ({ post, i, increment, decrement, comments }) => (
     </div>
     <figcaption>
       <p>
-        {replace(post.caption.text, /#(\w+)/g, (match, i) => <Hashtag key={i} text={match} />)}
+        {replace(post.caption.text, /#(\w+)/g, (match, i) => <Mention key={i} text={match} hashtag={true} />)}
       </p>
       <div className='control-buttons'>
         <button
