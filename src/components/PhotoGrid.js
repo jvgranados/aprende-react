@@ -9,10 +9,11 @@ class PhotoGrid extends Component {
 
   componentDidMount = async () => {
     try {
-      // TODO: haya el modo de traerte los posts del servidor!
-      // TODO: this.setState({ posts }) Pista: usa `fetch` 😄
+      const res = await fetch(API_URL)
+      const posts = await res.json()
+      this.setState({ posts })
     } catch (err) {
-      // TODO: no te olvides del error handling! ⚠️
+      console.error('Error get photos: ' + err) 
     }
   }
 
