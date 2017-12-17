@@ -1,9 +1,13 @@
 import React, { Component } from 'react'
 
 class Comments extends Component {
-  state = { showComments: true }
+  state = {
+    showComments: false
+  }
 
-  // TODO: haz tu propio método `handleClick` para modificar el estado
+  toogleComments = () => (
+    this.setState({ showComments : !this.state.showComments})
+  )
 
   renderComment = ({ from: { full_name: name }, text }, i) => (
     <div className='comment' key={i}>
@@ -19,16 +23,14 @@ class Comments extends Component {
 
   render = () => (
     <div className='comments'>
-      {/* TODO: tienes que evitar que se rendericen los
-        comentarios si `showComments === false` */}
-      <div className='comments-list'>
-        {this.props.postComments.map(this.renderComment.bind(this))}
-      </div>
+      {
+        this.state.showComments && (<div className='comments-list'>
+          {this.props.postComments.map(this.renderComment.bind(this))}
+        </div>)
+      }
       <div className='control-buttons'>
-        {/* TODO: haz que el botón llame a tu nuevo método (Pista: `onClick`)  */}
-        <button onClick={this.toggleComments}>
-          {/* TODO: el texto del botón también tiene que cambiar... */}
-          Hide comments
+        <button onClick={this.toogleComments}>
+          {this.state.showComments ? "Hide" : "Show"} comments
         </button>
       </div>
     </div>
