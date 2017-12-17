@@ -1,9 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router'
-// TODO: importar aquí `react-replace-string`
+import replace from 'react-string-replace'
 import CSSTransitionGroup from 'react-addons-css-transition-group'
-
-// TODO: importar nuestro componente `Hashtag` (hay que crearlo primero :)
+import Hashtag from './Hashtag'
 
 const Photo = ({ post, i, increment, decrement, comments }) => (
   <figure className='grid-figure'>
@@ -19,11 +18,9 @@ const Photo = ({ post, i, increment, decrement, comments }) => (
       </CSSTransitionGroup>
     </div>
     <figcaption>
-      {/*
-        TODO: reemplazar esta línea utilizando `react-replace-string`
-        (Pista: https://github.com/iansinnott/react-string-replace)
-      */}
-      <p>{post.caption.text}</p>
+      <p>
+        {replace(post.caption.text, /#(\w+)/g, (match, i) => <Hashtag key={i} text={match} />)}
+      </p>
       <div className='control-buttons'>
         <button
           onClick={() => post.user_has_liked ? decrement(i) : increment(i)}
